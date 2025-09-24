@@ -48,4 +48,33 @@ public class BasicTxTest {
         log.info("--- tx rollback end ---");
     }
 
+    @Test
+    void double_commit() {
+        log.info("=== 첫 번째 트랜잭션 시작 ===");
+        final TransactionStatus tx1 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("=== 첫 번째 트랜잭션 커밋 시작 ===");
+        txManager.commit(tx1);
+        log.info("=== 첫 번째 트랜잭션 커밋 완료 ===");
+
+        log.info("=== 두 번째 트랜잭션 시작 ===");
+        final TransactionStatus tx2 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("=== 두 번째 트랜잭션 커밋 시작 ===");
+        txManager.commit(tx2);
+        log.info("=== 두 번째 트랜잭션 커밋 완료 ===");
+    }
+
+    @Test
+    void double_commit_rollback() {
+        log.info("=== 첫 번째 트랜잭션 시작 ===");
+        final TransactionStatus tx1 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("=== 첫 번째 트랜잭션 커밋 시작 ===");
+        txManager.commit(tx1);
+        log.info("=== 첫 번째 트랜잭션 커밋 완료 ===");
+
+        log.info("=== 두 번째 트랜잭션 시작 ===");
+        final TransactionStatus tx2 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("=== 두 번째 트랜잭션 롤백 시작 ===");
+        txManager.rollback(tx2);
+        log.info("=== 두 번째 트랜잭션 롤백 완료 ===");
+    }
 }
